@@ -19,7 +19,19 @@ class _HomeBodyState extends State<HomeBody> {
   }
 
   @override
-  Widget build(BuildContext context) { }
+  Widget build(BuildContext context) => GridView.builder(
+        itemCount: episodes.length,
+        padding: EdgeInsets.all(10.0),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisSpacing: 10.0,
+          mainAxisSpacing: 10.0,
+          crossAxisCount: 2,
+        ),
+        itemBuilder: (context, index) => EpisodeGridItem(
+          episode: episodes[index],
+          onTap: () => _navigateToEpisodeDetails(episodes[index]),
+        ),
+      );
 
   void _fetchEpisodes() async {
     final episodes = await EpisodesDataSource.fetchEpisodes();
@@ -28,4 +40,9 @@ class _HomeBodyState extends State<HomeBody> {
     });
   }
 
+  void _navigateToEpisodeDetails(Episode episode) {
+    Navigator.of(context).push<dynamic>(MaterialPageRoute<dynamic>(
+      builder: (context) => DetailsScreen(episode: episode),
+    ));
+  }
 }
